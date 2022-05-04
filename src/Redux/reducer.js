@@ -6,6 +6,7 @@ import {
   ADD_NAME,
   REMOVE_FROM_CART,
   EMPTY_CART,
+  ADD_TOKEN,
 } from "./action";
 // =======
 // import { ADD_TO_CART } from "./action";
@@ -13,9 +14,9 @@ import {
 export const reducer = (store, action) => {
   switch (action.type) {
     case ADD_TO_CART:
-      console.log(store);
+      // console.log(store);
       let temp = store.cart;
-      if (!temp.includes(+action.payload)) temp.push(+action.payload);
+      if (!temp.includes(action.payload)) temp.push(action.payload);
       localStorage.setItem("cart", JSON.stringify(temp));
       return {
         ...store,
@@ -42,6 +43,13 @@ export const reducer = (store, action) => {
         ...store,
         name: action.payload,
       };
+
+    case ADD_TOKEN:
+      return {
+        ...store,
+        name: action.payload,
+      };
+
     case REMOVE_FROM_CART:
       console.log(action);
       let newData = { ...store };

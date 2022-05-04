@@ -40,7 +40,7 @@ let Section = styled.section`
       border-radius: 3px;
     }
     #privacy-policy {
-      margin: 70px auto 25px;
+      margin: 25px auto;
       font-size: 11px;
       line-height: 20px;
       color: grey;
@@ -71,6 +71,32 @@ let Section = styled.section`
           outline: none;
           font-size: 14px;
         }
+      }
+    }
+  }
+  #login-para {
+    text-align: center;
+    span {
+      color: #f43397;
+      cursor: pointer;
+    }
+  }
+  #login-options {
+    button {
+      margin: 20px 5% 0;
+      background-color: #3c66c4;
+      color: #fff;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      :nth-of-type(1) {
+        background-color: #cf4332;
+      }
+      svg {
+        height: 16px;
+        width: 20px;
+        margin-right: 6px;
       }
     }
   }

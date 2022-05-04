@@ -2,22 +2,38 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./profile.css";
 import { useDispatch } from "react-redux";
-import { addName } from "../../Redux/action.js";
+import { addName, addToken } from "../../Redux/action.js";
 
 export default function Login() {
   let [data, setData] = React.useState({
     email: "harsh.gajera17@gmail.com",
-    fname: "Harsh",
-    lname: "Gajera",
-    otp: localStorage.getItem("otp"),
+    password: "harsh@123",
   });
   let navigate = useNavigate();
   let dispatch = useDispatch();
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
-    let name = e.target.elements[1].value;
-    dispatch(addName(name));
-    localStorage.setItem("name", name);
+    const a = await fetch("https://meeshodb.herokuapp.com/api/v1/users/login", {
+      method: "POST",
+      body: JSON.stringify({
+        email: data.email,
+        password: data.password,
+      }),
+      headers: { "Content-Type": "application/json" },
+    });
+    const b = await a.json();
+    console.log(b);
+    if (b.message === "Success!!!") {
+      alert(b.message);
+      dispatch(addName(b.user.name));
+      dispatch(addToken(b.token));
+      localStorage.setItem("name", b.user.name);
+      navigate("/checkout/cart");
+      return;
+    }
+    alert(`${b.status}. logged in as guest user!!!`);
+    dispatch(addToken("10306dsd4sa6d4e84e6d4a6sas4ca6s464"));
+    dispatch(addToken("User"));
     navigate("/checkout/cart");
   };
   const changeHandler = (e) => {
@@ -26,50 +42,54 @@ export default function Login() {
       [e.target.id]: e.target.value,
     });
   };
+
+  const forgotPassword = async () => {
+    const a = await fetch(
+      "https://meeshodb.herokuapp.com/api/v1/users/forgotPassword",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          email: data.email,
+        }),
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    const b = await a.json();
+    if (b.message === "Success!!!") {
+      alert(
+        `Your reset password link is <${b.link}>. make patch request to reset your password with email address.`
+      );
+      navigate("/checkout/cart");
+      return;
+    }
+    navigate("/checkout/cart");
+    alert(b.message);
+  };
   return (
     <section id="login-page">
       <div>
-        <img
-          src="https://images.meesho.com/images/marketing/1648820929975.jpeg"
-          alt=""
-        />
-        <h2>Create Account</h2>
+        <h1>Welcome Back</h1>
+        <h2>Login to Your Account</h2>
         <form action="" onSubmit={submitForm}>
-          <label htmlFor="emailId">Email ID:</label>
+          <label htmlFor="email">Enter Your Email Address:</label>
           <input
-            type="text"
-            placeholder="enter your email address"
+            type="email"
             id="email"
+            placeholder="Email"
+            onChange={changeHandler}
             value={data.email}
-            onChange={changeHandler}
           />
-          <label htmlFor="fname">First Name:</label>
+          <label htmlFor="password">Enter Your Password:</label>
           <input
-            type="text"
-            placeholder="enter your first name"
-            id="fname"
-            required
-            value={data.fname}
+            type="password"
+            id="password"
+            placeholder="Password"
             onChange={changeHandler}
+            value={data.password}
           />
-          <label htmlFor="lname">Last Name:</label>
-          <input
-            type="text"
-            placeholder="enter your last name"
-            id="lname"
-            value={data.lname}
-            onChange={changeHandler}
-          />
-          <label htmlFor="otp">Enter OTP:</label>
-          <input
-            type="text"
-            placeholder="enter otp"
-            id="otp"
-            value={data.otp}
-            onChange={changeHandler}
-          />
-          <button>Verify</button>
+          <button>Log In</button>
         </form>
+        <p onClick={forgotPassword}>Forgot Password?</p>
       </div>
     </section>
   );

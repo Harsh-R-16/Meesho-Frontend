@@ -4,6 +4,7 @@ export const SAVE_ADDRESS = "SAVE_ADDRESS";
 export const REMOVE_FROM_CART = "REMOVE_FORM_CART";
 export const ADD_NAME = "ADD_NAME";
 export const EMPTY_CART = "EMPTY_CART";
+export const ADD_TOKEN = "ADD_TOKEN";
 
 export const addToCart = (payload) => ({ type: ADD_TO_CART, payload });
 
@@ -22,6 +23,7 @@ export const saveAddress = (payload) => {
 
 // export const addToCart = (payload) => ({ type: ADD_TO_CART, payload });
 export const addName = (payload) => ({ type: ADD_NAME, payload });
+export const addToken = (payload) => ({ type: ADD_TOKEN, payload });
 
 export const removeFromCart = (payload) => ({
   type: REMOVE_FROM_CART,

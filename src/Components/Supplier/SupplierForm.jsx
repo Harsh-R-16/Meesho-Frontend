@@ -1,7 +1,7 @@
 import React from "react";
 import { FaLock } from "react-icons/fa";
 import styled from "styled-components";
-import img from "./form-img.png";
+import img from "./images/form-img.png";
 let temp = [160320, "harsh.gajera17@gmail.com", "harsh1234"];
 
 export default function SupplierForm() {

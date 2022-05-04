@@ -8,3 +8,10 @@
   padding: 7px 10px;
   border-top-right-radius: 5px;
 }
+
+#loader-img {
+  width: 260px;
+  aspect-ratio: 0.7;
+  margin: -50px auto;
+  display: block;
+}

@@ -6,32 +6,50 @@ import { Main } from "./Style-Products";
 import { FaStar } from "react-icons/fa";
 let total = Math.round(Math.random() * 1000 + 4526);
 let arr = new Array(Math.floor(Math.random() * 500 + 1000));
-let res;
 for (let i = 0; i < arr.length; i++) {
   arr[i] = i + 1;
 }
 export function ProductS() {
   let { subtype, type } = useParams();
-  // console.log(type);
   let navigate = useNavigate();
   let [products, setProducts] = useState([]);
+  let [isLoading, setIsLoading] = useState(true);
   let [index, setIndex] = useState(0);
   useEffect(() => {
+    document.title = `Meesho | ${type} | ${subtype}`;
+    setIsLoading(true);
     total = Math.round(Math.random() * 1000 + 4526);
     arr = new Array(Math.floor(Math.random() * 500 + 1000));
     for (let i = 0; i < arr.length; i++) {
       arr[i] = i + 1;
     }
     setIndex(0);
-    res = [];
-    for (let i = 0; i < allProducts.length; i++) {
-      if (allProducts[i].type === type) {
-        res.push(allProducts[i]);
-      }
-    }
-    // console.log(type);
-    res.sort(() => Math.random() - 0.5);
-    setProducts(res);
+    let temp = [];
+
+    fetch("https://meeshodb.herokuapp.com/api/v1/products")
+      .then((res) => res.json())
+      .then((res) => {
+        for (let i = 0; i < res.data.length; i++) {
+          if (res.data[i].type === type) {
+            temp.push(res.data[i]);
+          }
+        }
+        temp.sort(() => Math.random() - 0.5);
+        setIsLoading(false);
+        setProducts(temp);
+      })
+      .catch((err) => {
+        console.log(err);
+        for (let i = 0; i < allProducts.length; i++) {
+          if (allProducts[i].type === type) {
+            temp.push(allProducts[i]);
+          }
+        }
+        // // console.log(type);
+        temp.sort(() => Math.random() - 0.5);
+        setIsLoading(false);
+        setProducts(temp);
+      });
     document.querySelectorAll("#sort-btns button").forEach((btn) => {
       btn.classList.remove("active-btn");
     });
@@ -46,7 +64,7 @@ export function ProductS() {
       if (btn.innerHTML === e.target.innerHTML) btn.classList.add("active-btn");
       else btn.classList.remove("active-btn");
     });
-    let newArr = [...res];
+    let newArr = [...products];
     if (e.target.innerHTML === "Popularity") {
       newArr.sort((a, b) => b.rating - a.rating);
     } else if (e.target.innerHTML === "Low to High") {
@@ -60,7 +78,14 @@ export function ProductS() {
     setProducts(newArr);
   };
   // console.log(res);
-  return (
+  return isLoading ? (
+    <img
+      src="https://i.pinimg.com/originals/cb/17/b8/cb17b80a942d7c317a35ff1324fae12f.gif"
+      alt="loader"
+      id="loader-img"
+      style={{ margin: "17vh auto" }}
+    />
+  ) : (
     <Main>
       <section id="category">
         <div id="sort-btns" onClick={sortingBtns}>
@@ -92,10 +117,10 @@ export function ProductS() {
           .slice((index % 5) * 16, (index % 5) * 16 + 16)
           .map(
             (
-              { img, name, soldBy, sprice, aprice, rating, reviews, id },
+              { img, name, soldBy, sprice, aprice, rating, reviews, _id },
               index
             ) => (
-              <div key={index} onClick={() => navigate(`/product/${id}`)}>
+              <div key={index} onClick={() => navigate(`/product/${_id}`)}>
                 <img src={img} alt="" className="main-img" />
                 <p className="quantity">
                   + {Math.floor(Math.random() * 7) + 1} More

@@ -259,13 +259,19 @@ export default function Navbar() {
         </section>
         <section id="bottom" onMouseOver={mouseOver} onMouseOut={mouseOut}>
           <ul>
-            {listItems.map((i, index) => (
-              <Link to={`/products/${i}`} key={index}>
-                <li key={index} id={index} onMouseOver={() => setIndex(index)}>
-                  {i}
-                </li>
-              </Link>
-            ))}
+            {listItems.map((i, index) => {
+              return (
+                <Link to={`/products/${i}`} key={index}>
+                  <li
+                    key={index}
+                    id={index}
+                    onMouseOver={() => setIndex(index)}
+                  >
+                    {i}
+                  </li>
+                </Link>
+              );
+            })}
           </ul>
           <article onMouseOut={mouseOut}>
             {data[index].map((items, i) => (

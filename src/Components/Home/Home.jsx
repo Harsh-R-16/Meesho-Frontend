@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { Main } from "./Styled-Home";
 import img1 from "./Images/img1.png";
 import img2 from "./Images/img2.png";
@@ -10,9 +10,19 @@ import "./Home.css";
 import { FaStar } from "react-icons/fa";
 
 export default function Home() {
-  let products = [...allProducts];
-  products.sort(() => Math.random() - 0.5);
-  // console.log(allProducts);
+  let [products, setProducts] = useState([]);
+  useEffect(() => {
+    fetch("https://meeshodb.herokuapp.com/api/v1/products/top")
+      .then((res) => res.json())
+      .then((res) => {
+        setProducts(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        allProducts.sort(() => Math.random() - 0.5);
+        setProducts(allProducts.slice(0, 80));
+      });
+  }, []);
   return (
     <Main>
       <section id="homepage">
@@ -51,15 +61,14 @@ export default function Home() {
         <h1>Top Products for You!!!</h1>
         <hr />
       </div>
-      <section id="products">
-        {products
-          .slice(0, 80)
-          .map(
+      {products.length ? (
+        <section id="products">
+          {products.map(
             (
-              { img, name, soldBy, sprice, aprice, rating, reviews, id },
+              { img, name, soldBy, sprice, aprice, rating, reviews, _id },
               index
             ) => (
-              <Link to={`/product/${id}`}>
+              <Link to={`/product/${_id}`}>
                 <div key={index}>
                   <img src={img} alt="" className="main-img" />
                   <p className="quantity">
@@ -128,7 +137,14 @@ export default function Home() {
               </Link>
             )
           )}
-      </section>
+        </section>
+      ) : (
+        <img
+          src="https://i.pinimg.com/originals/cb/17/b8/cb17b80a942d7c317a35ff1324fae12f.gif"
+          alt="loader"
+          id="loader-img"
+        />
+      )}
     </Main>
   );
 }

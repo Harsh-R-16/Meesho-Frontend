@@ -1,5 +1,4 @@
-import React from "react";
-import { allProducts } from "../../AllProducts";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../Redux/action.js";
@@ -12,42 +11,44 @@ import {
 import { Section } from "./Styled-Product";
 import ratingImg from "./rating.png";
 import "./product.css";
-let i;
 let discount = Math.floor(Math.random() * 150);
+let totalProducts = Math.round(Math.random() * 400 + 50);
+let totalFollowers = Math.floor(Math.random() * 5000 + 100);
+let allImages = [
+  "https://source.unsplash.com/random/?cloths",
+  "https://source.unsplash.com/random/?shoes",
+  "https://source.unsplash.com/random/?kids",
+  "https://source.unsplash.com/random/?motivation",
+  "https://source.unsplash.com/random/?nature",
+];
 export default function Product() {
-  let allImages = [
-    "https://source.unsplash.com/random/?cloths",
-    "https://source.unsplash.com/random/?shoes",
-    "https://source.unsplash.com/random/?kids",
-    "https://source.unsplash.com/random/?motivation",
-    "https://source.unsplash.com/random/?nature",
-  ];
   let { id } = useParams();
-  let [state, setState] = React.useState("Add to Cart");
-  let [image, setImage] = React.useState("");
+  let [state, setState] = useState("Add to Cart");
+  let [image, setImage] = useState("");
   let cart = useSelector((state) => state.cart);
   let dispatch = useDispatch();
-  console.log(id);
-  for (i = 0; i < allProducts.length; i++) {
-    if (allProducts[i].id === +id) {
-      break;
-    }
-  }
-  if (cart.includes(+id)) state = "Already in the Cart";
+  let [product, setProduct] = useState({});
+  useEffect(() => {
+    setProduct({});
+    fetch(`https://meeshodb.herokuapp.com/api/v1/products/${id}`)
+      .then((res) => res.json())
+      .then((res) => setProduct(res.data))
+      .catch((err) => console.log(err));
+  }, [id]);
+
+  if (cart.includes(id)) state = "Already in the Cart";
 
   const clcHandler = (e) => {
+    console.log(e.target.id);
     dispatch(addToCart(e.target.id));
     if (state === "Add to Cart") setState("Already in the Cart");
   };
 
-  console.log(allProducts[i], i);
-  let { img, name, soldBy, similar, sprice, aprice, rating, reviews, details } =
-    allProducts[i];
-  React.useEffect(() => {
-    setImage(img);
+  useEffect(() => {
+    setImage(product.img);
     window.scrollTo(0, 0);
-  }, [img]);
-  return (
+  }, [product.img]);
+  return product.name ? (
     <Section id="single-product">
       <article id="product-article-1">
         {allImages.map((i) => (
@@ -55,32 +56,33 @@ export default function Product() {
         ))}
       </article>
       <article id="product-article-2">
-        <img src={image} alt="" id="main-img" />
-        <button id={+id} onClick={clcHandler}>
+        <img src={image} alt="" id="main-img" />{" "}
+        <p className="more">+ {Math.floor(Math.random() * 7) + 1} More</p>
+        <button id={id} onClick={clcHandler}>
           <FaShoppingCart /> {state}
         </button>
         <hr />
         <p>3 Similar products</p>
         <div>
-          {similar.map((i) => (
+          {product.similar.map((i) => (
             <img src={i} alt="" onClick={() => setImage(i)} />
           ))}
         </div>
       </article>
       <article id="product-article-3">
         <div id="price">
-          <h2>{name}</h2>
+          <h2>{product.name}</h2>
           <h3 className="price">
-            ₹{sprice} <span className="aprice">₹{aprice}</span>{" "}
+            ₹{product.sprice} <span className="aprice">₹{product.aprice}</span>{" "}
             <span className="discount">
-              {((1 - sprice / aprice) * 100).toFixed(1)}% off
+              {((1 - product.sprice / product.aprice) * 100).toFixed(1)}% off
             </span>
           </h3>
           <h4 className="rating">
             <span>
-              {rating} <FaStar />
+              {product.rating} <FaStar />
             </span>{" "}
-            {reviews} Reviews
+            {product.reviews} Reviews
           </h4>
 
           <h5 className="firstorder">
@@ -102,7 +104,7 @@ export default function Product() {
         </div>
         <div id="details">
           <p>Product Details</p>
-          {details.map((i) => (
+          {product.details.map((i) => (
             <p>{i}</p>
           ))}
           <p>Sizes: </p>
@@ -117,12 +119,12 @@ export default function Product() {
           <p>Sold By</p>
           <article>
             <FaShopify />
-            <span>{soldBy}</span>
+            <span>{product.soldBy}</span>
             <button>View Shop</button>
           </article>
           <h6>
-            <span>{Math.round(Math.random() * 400 + 50)}</span> Products{" "}
-            <span>{Math.floor(Math.random() * 5000 + 100)}</span> Followers
+            <span>{totalProducts}</span> Products <span>{totalFollowers}</span>{" "}
+            Followers
           </h6>
         </div>
         <div id="rating-img">
@@ -172,5 +174,11 @@ export default function Product() {
         </div>
       </article>
     </Section>
+  ) : (
+    <img
+      src="https://miro.medium.com/max/978/0*cWpsf9D3g346Va20.gif"
+      alt="loader"
+      id="loader"
+    />
   );
 }
