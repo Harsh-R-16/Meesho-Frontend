@@ -1,6 +1,7 @@
 import React from "react";
 import { Section } from "./Styled-Profile";
 import { useNavigate } from "react-router-dom";
+import SigninWithGoogle from "./SigninWithGoogle";
 
 export default function Profile() {
   let [inp, setInp] = React.useState("7046581170");
@@ -30,6 +31,7 @@ export default function Profile() {
           />
         </p>
         <button onClick={submitForm}>Send OTP</button>
+        <SigninWithGoogle/>
         <p id="privacy-policy">
           <p>By continuing, you agree to Meesho’s</p>{" "}
           <span>Terms &amp; Conditions</span> and <span>Privacy Policy</span>

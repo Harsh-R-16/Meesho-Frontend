@@ -29,6 +29,46 @@ function Payment() {
     newInp[+id] = value;
     setInp(newInp);
   };
+
+  let amount=localStorage.getItem('total')
+  const loadScript = (src) => {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = src;
+
+      script.onload = () => {
+        resolve(true)
+      }
+
+      script.onerror = () => {
+        resolve(false)
+      }
+
+      document.body.appendChild(script)
+  })
+}
+  const displayRazorpay = async (amount) => {
+   // alert(amount)
+    let res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
+    if (!res) {
+      alert('Woops! You might be online. The resources failed to load')
+      return
+    }
+
+    const options = {
+      key: "rzp_test_TTQmS6LSlsE8yl",
+      currency: "INR",
+      amount: amount * 100,
+      name: "Meesho",
+      description: "Thanks for Placing Order with Meesho",
+      image: "dejd",
+      order_id: "1234678",
+      
+      
+    }
+    const paymentObject = new window.RazorPay(options)
+    paymentObject.open()
+  }
   return (
     <Section>
       <div>
@@ -121,6 +161,7 @@ function Payment() {
           onChange={changeHandler}
         />
         <button onClick={handleClick}>Place Order</button>
+        <button onClick={()=>displayRazorpay(amount)}>Place Order</button>
       </form>
     </Section>
   );

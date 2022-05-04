@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./profile.css";
 import { useDispatch } from "react-redux";
 import { addName } from "../../Redux/action.js";
+// import SigninWithGoogle from "./SigninWithGoogle";
 
 export default function Login() {
   let [data, setData] = React.useState({
@@ -70,6 +71,7 @@ export default function Login() {
           />
           <button>Verify</button>
         </form>
+        {/* <SigninWithGoogle/> */}
       </div>
     </section>
   );
