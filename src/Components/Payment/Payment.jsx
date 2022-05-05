@@ -24,6 +24,7 @@ function Payment() {
   let [color, setColor] = React.useState("#06A759");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const handleClick = async (e) => {
     e.preventDefault();
     dispatch(increaseStep());
@@ -36,16 +37,19 @@ function Payment() {
       return;
     }
 
-    const data = await fetch("http://localhost:1337/razorpay", {
+    const data = await fetch("https://meeshodb.herokuapp.com/razorpay", {
       method: "POST",
+      body: JSON.stringify({
+        amount: localStorage.getItem("total") || 1000,
+      }),
     }).then((t) => t.json());
 
     console.log(data);
-
+    let t = localStorage.getItem("total") || 500;
     const options = {
       key: "rzp_test_OnubQmqY8GahSs",
       currency: data.currency,
-      amount: localStorage.getItem("total"),
+      amount: t * 100,
       order_id: data.id,
       name: "Meesho Website",
       description: "Thank you for Purchasing . Please give us some money.",
