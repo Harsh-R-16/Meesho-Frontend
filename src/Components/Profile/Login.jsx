@@ -23,19 +23,22 @@ export default function Login() {
     });
     const b = await a.json();
     console.log(b);
+    dispatch(addName(b.message === "Success!!!" ? b.user.name : "User"));
+    localStorage.setItem(
+      "name",
+      b.message === "Success!!!" ? b.user.name : "User"
+    );
+    localStorage.setItem("token", b.message === "Success!!!" ? b.token : "");
     if (b.message === "Success!!!") {
       alert(b.message);
-      dispatch(addName(b.user.name));
       dispatch(addToken(b.token));
-      localStorage.setItem("name", b.user.name);
-      navigate("/checkout/cart");
-      return;
+    } else {
+      alert(`${b.status}. logged in as guest user!!!`);
+      dispatch(addToken(""));
     }
-    alert(`${b.status}. logged in as guest user!!!`);
-    dispatch(addToken("10306dsd4sa6d4e84e6d4a6sas4ca6s464"));
-    dispatch(addToken("User"));
     navigate("/checkout/cart");
   };
+
   const changeHandler = (e) => {
     setData({
       ...data,

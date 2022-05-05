@@ -30,17 +30,21 @@ export default function Signup() {
     );
     const b = await a.json();
     console.log(b);
-    let name = e.target.elements[1].value;
-    if (b.message === "Success!!!") alert(b.message);
-    else
+    let name = data.fname;
+    dispatch(addName(name));
+    localStorage.setItem("name", name.trim() ? name : "User");
+
+    if (b.message === "Success!!!") {
+      dispatch(addToken(b.token));
+      localStorage.setItem("token", b.token);
+      alert(b.message);
+    } else {
+      dispatch(addToken(""));
+      localStorage.setItem("token", "");
       alert(
         `${b.status}. you have already registered, please login with details. logged in as guest user!!!`
       );
-    dispatch(addName(name));
-    dispatch(
-      addToken(b.token ? b.token : "10306dsd4sa6d4e84e6d4a6sas4ca6s464")
-    );
-    localStorage.setItem("name", name ? name : "User");
+    }
     navigate("/checkout/cart");
   };
   const changeHandler = (e) => {

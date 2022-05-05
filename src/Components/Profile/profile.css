@@ -98,3 +98,8 @@
 #login-page button {
   margin: 30px 0;
 }
+
+.metro {
+  background-color: #3c66c4 !important;
+  font-weight: 500 !important;
+}

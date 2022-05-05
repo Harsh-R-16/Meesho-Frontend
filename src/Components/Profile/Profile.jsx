@@ -2,6 +2,7 @@ import React from "react";
 import { Section } from "./Styled-Profile";
 import { useNavigate } from "react-router-dom";
 import { FaGooglePlusG, FaFacebookF } from "react-icons/fa";
+import FacebookLogin from "react-facebook-login";
 
 export default function Profile() {
   let [inp, setInp] = React.useState("7046581170");
@@ -12,6 +13,19 @@ export default function Profile() {
     localStorage.setItem("otp", a);
     navigate("/signup");
   };
+  const responseFacebook = (response) => {
+    console.log(response);
+    alert(
+      "Success!!!\n" +
+        "Name: " +
+        response.name +
+        "\nEmail ID: " +
+        response.email +
+        "\n" +
+        JSON.stringify(response)
+    );
+  };
+
   return (
     <Section>
       <div>
@@ -46,10 +60,14 @@ export default function Profile() {
             <FaGooglePlusG />
             Login with Google
           </button>
-          <button>
-            <FaFacebookF />
-            Login with Facebook
-          </button>
+
+          <FacebookLogin
+            appId="696422361677581"
+            autoLoad={true}
+            fields="name,email,picture"
+            callback={responseFacebook}
+            cssClass="my-facebook-button-class"
+          />
         </div>
         <p id="privacy-policy">
           <p>By continuing, you agree to Meesho’s</p>{" "}

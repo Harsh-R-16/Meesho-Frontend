@@ -47,7 +47,7 @@ export const reducer = (store, action) => {
     case ADD_TOKEN:
       return {
         ...store,
-        name: action.payload,
+        token: action.payload,
       };
 
     case REMOVE_FROM_CART:
