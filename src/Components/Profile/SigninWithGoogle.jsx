@@ -12,15 +12,17 @@ function SigninWithGoogle() {
   localStorage.setItem('name',response.profileObj.givenName)
     setIsAuth(true)
     alert(`Welcome ${response.profileObj.givenName} , Happy Shopping`)
-    navigate('/')
+   navigate('/')
   }
   let googleFailure = (response) => {
     console.log(response);    }
   return (
     <GoogleLogin
       clientId='62223785118-7ehbulfopl0d7hb1qr67vr4r7fr934qf.apps.googleusercontent.com'
-   
       buttonText='Login With Google'
+      render={renderProps => (
+        <button style={{marginTop:'-20px'}} onClick={renderProps.onClick} disabled={renderProps.disabled}>Login With Google</button>
+      )}
       onSuccess={googleSuccess}
       onFailure={googleFailure}
       cookiePolicy="single_host_origin"

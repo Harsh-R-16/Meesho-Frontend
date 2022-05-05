@@ -31,44 +31,80 @@ function Payment() {
   };
 
   let amount=localStorage.getItem('total')
-  const loadScript = (src) => {
-    return new Promise((resolve) => {
-      const script = document.createElement('script');
-      script.src = src;
+  
+  // function loadScript(src) {
+  //   return new Promise((resolve) => {
+  //     const script = document.createElement('script')
+  //     script.src = src
+  //     script.onload = () => {
+  //       resolve(true)
+  //     }
+  //     script.onerror = () => {
+  //       resolve(false)
+  //     }
+  //     document.body.appendChild(script)
+  //   })
+  // }
+  // const displayRazorpay = async (amount) => {
+  //  // alert(amount)
+  //   let res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
+  //   if (!res) {
+  //     alert('Woops! You might be online. The resources failed to load')
+  //     return
+  //   }
 
-      script.onload = () => {
-        resolve(true)
-      }
-
-      script.onerror = () => {
-        resolve(false)
-      }
-
-      document.body.appendChild(script)
-  })
-}
-  const displayRazorpay = async (amount) => {
-   // alert(amount)
-    let res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
-    if (!res) {
-      alert('Woops! You might be online. The resources failed to load')
-      return
-    }
-
-    const options = {
-      key: "rzp_test_TTQmS6LSlsE8yl",
-      currency: "INR",
-      amount: amount * 100,
-      name: "Meesho",
-      description: "Thanks for Placing Order with Meesho",
-      image: "dejd",
-      order_id: "1234678",
+  //   const options = {
+  //     key: "rzp_test_TTQmS6LSlsE8yl",
+  //     currency: "INR",
+  //     amount: amount * 100,
+  //     name: "Meesho",
+  //     description: "Thanks for Placing Order with Meesho",
+  //     image: "dejd",
+  //     order_id: "1234678",
       
       
-    }
-    const paymentObject = new window.RazorPay(options)
-    paymentObject.open()
-  }
+  //   }
+  //   const paymentObject = new window.RazorPay(options)
+  //   paymentObject.open()
+  // }
+
+  // async function displayRazorpay() {
+	// 	const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
+
+	// 	if (!res) {
+	// 		alert('Razorpay SDK failed to load. Are you online?')
+	// 		return
+	// 	}
+
+	// 	const data = await fetch('http://localhost:3000/razorpay', { method: 'POST' }).then((t) =>
+	// 		t.json()
+	// 	)
+
+	// 	console.log(data)
+
+	// 	const options = {
+	// 		key: 'rzp_test_TTQmS6LSlsE8yl',
+	// 		currency: data.currency,
+	// 		amount: data.amount.toString(),
+	// 		order_id: data.id,
+	// 		name: 'Meesho',
+	// 		description: 'Thank you shopping',
+		
+	// 		handler: function (response) {
+	// 			alert(response.razorpay_payment_id)
+	// 			alert(response.razorpay_order_id)
+	// 			alert(response.razorpay_signature)
+	// 		},
+	// 		prefill: {
+			
+	// 			email: 'sdfdsjfh2@ndsfdf.com',
+	// 			phone_number: '9899999999'
+	// 		}
+	// 	}
+	// 	const paymentObject = new window.Razorpay(options)
+	// 	paymentObject.open()
+	// }
+
   return (
     <Section>
       <div>
@@ -161,7 +197,7 @@ function Payment() {
           onChange={changeHandler}
         />
         <button onClick={handleClick}>Place Order</button>
-        <button onClick={()=>displayRazorpay(amount)}>Place Order</button>
+        <button>Place Order</button>
       </form>
     </Section>
   );
