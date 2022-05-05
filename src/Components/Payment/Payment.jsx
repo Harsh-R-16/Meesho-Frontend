@@ -4,13 +4,64 @@ import { useDispatch } from "react-redux";
 import { increaseStep } from "../../Redux/action";
 import styled from "styled-components";
 let data = ["1234 5678 1234 5678", "12/25", "123", "Harsh Gajera"];
+
+function loadScript(src) {
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = src;
+    script.onload = () => {
+      resolve(true);
+    };
+    script.onerror = () => {
+      resolve(false);
+    };
+    document.body.appendChild(script);
+  });
+}
+
 function Payment() {
   let [inp, setInp] = React.useState(data);
   let [color, setColor] = React.useState("#06A759");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
+    e.preventDefault();
     dispatch(increaseStep());
+    const res = await loadScript(
+      "https://checkout.razorpay.com/v1/checkout.js"
+    );
+
+    if (!res) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      return;
+    }
+
+    const data = await fetch("http://localhost:1337/razorpay", {
+      method: "POST",
+    }).then((t) => t.json());
+
+    console.log(data);
+
+    const options = {
+      key: "rzp_test_OnubQmqY8GahSs",
+      currency: data.currency,
+      amount: localStorage.getItem("total"),
+      order_id: data.id,
+      name: "Meesho Website",
+      description: "Thank you for Purchasing . Please give us some money.",
+      image:
+        "https://th.bing.com/th/id/OIP.Q0eOFMvy3HyuVojFFxvDZwAAAA?w=143&h=150&c=7&r=0&o=5&dpr=1.25&pid=1.7",
+      handler: function (response) {
+        alert("Payment request was successful!!!");
+      },
+      prefill: {
+        name: "Harsh Gajera",
+        email: "harsh.gajera17@gmail.com",
+        phone_number: "7046581170",
+      },
+    };
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
     navigate("/checkout/summary");
   };
   const clr = () => {

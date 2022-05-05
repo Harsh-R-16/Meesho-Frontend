@@ -1,7 +1,7 @@
 import React from "react";
 import { Section } from "./Styled-Profile";
 import { useNavigate } from "react-router-dom";
-import { FaGooglePlusG, FaFacebookF } from "react-icons/fa";
+import { FaGooglePlusG } from "react-icons/fa";
 import FacebookLogin from "react-facebook-login";
 
 export default function Profile() {
@@ -24,6 +24,7 @@ export default function Profile() {
         "\n" +
         JSON.stringify(response)
     );
+    navigate("/signup");
   };
 
   return (
