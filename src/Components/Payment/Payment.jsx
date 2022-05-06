@@ -36,20 +36,21 @@ function Payment() {
       alert("Razorpay SDK failed to load. Are you online?");
       return;
     }
-
+    let t = +localStorage.getItem("total");
+    if (!t) t = 500;
     const data = await fetch("https://meeshodb.herokuapp.com/razorpay", {
       method: "POST",
       body: JSON.stringify({
-        amount: localStorage.getItem("total") || 1000,
+        amount: t,
       }),
     }).then((t) => t.json());
 
     console.log(data);
-    let t = localStorage.getItem("total") || 500;
+
     const options = {
       key: "rzp_test_OnubQmqY8GahSs",
       currency: data.currency,
-      amount: t * 100,
+      amount: data.amount,
       order_id: data.id,
       name: "Meesho Website",
       description: "Thank you for Purchasing . Please give us some money.",

@@ -47,16 +47,13 @@ export default function Login() {
   };
 
   const forgotPassword = async () => {
-    const a = await fetch(
-      "https://meeshodb.herokuapp.com/api/v1/users/forgotPassword",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          email: data.email,
-        }),
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    const a = await fetch("https://meeshodb.herokuapp.com/api/v1/products", {
+      method: "POST",
+      body: JSON.stringify({
+        email: data.email,
+      }),
+      headers: { "Content-Type": "application/json" },
+    });
     const b = await a.json();
     if (b.message === "Success!!!") {
       alert(

@@ -8,6 +8,20 @@ import "./navbar.css";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
+  let [products, setProducts] = useState(allProducts);
+  useEffect(() => {
+    fetch("https://meeshodb.herokuapp.com/api/v1/products")
+      .then((res) => res.json())
+      .then((res) => {
+        setProducts(res.data);
+        // console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setProducts(allProducts);
+      });
+  }, []);
+
   let count = useSelector((state) => state.count);
   let name = useSelector((state) => state.name);
   let [index, setIndex] = useState(8);
@@ -41,9 +55,9 @@ export default function Navbar() {
   const inpHandler = (e) => {
     let article = document.querySelector("#search-results");
     let newArr = [];
-    for (let i = 0; i < allProducts.length; i++) {
-      if (allProducts[i].name.toLowerCase().includes(e.target.value)) {
-        newArr.push(allProducts[i]);
+    for (let i = 0; i < products.length; i++) {
+      if (products[i].name.toLowerCase().includes(e.target.value)) {
+        newArr.push(products[i]);
       }
     }
     if (newArr.length && e.target.value) {
@@ -176,7 +190,7 @@ export default function Navbar() {
             </svg>
             <article id="search-results">
               {result.map((i, index) => (
-                <Link to={`/product/${i.id}`}>
+                <Link to={`/product/${i.id}`} key={index + 100}>
                   <p id={index} key={index}>
                     <svg
                       width="18"
@@ -219,9 +233,9 @@ export default function Navbar() {
             </p>
           </a>
           <p className="line">|</p>
-          <Link to="/supplier">
+          <a href="http://localhost:3001/" target="_blank" rel="noreferrer">
             <p>Become a Supplier</p>
-          </Link>
+          </a>
           <p className="line">|</p>
           <Link to="/profile">
             <p id="profile">

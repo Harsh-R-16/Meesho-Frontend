@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { addToCart } from "../../Redux/action.js";
 import {
   FaShoppingCart,
@@ -27,14 +28,22 @@ export default function Product() {
   let [image, setImage] = useState("");
   let cart = useSelector((state) => state.cart);
   let dispatch = useDispatch();
+  let navigate = useNavigate();
   let [product, setProduct] = useState({});
   useEffect(() => {
     setProduct({});
     fetch(`https://meeshodb.herokuapp.com/api/v1/products/${id}`)
       .then((res) => res.json())
-      .then((res) => setProduct(res.data))
+      .then((res) => {
+        if (res.data) {
+          setProduct(res.data);
+        } else {
+          alert("Failed to fetch product");
+          navigate("/");
+        }
+      })
       .catch((err) => console.log(err));
-  }, [id]);
+  }, [id, navigate]);
 
   if (cart.includes(id)) state = "Already in the Cart";
 

@@ -11,7 +11,6 @@ import Summary from "../Summary/Summary";
 import Profile from "../Profile/Profile";
 import Signup from "../Profile/Signup";
 import Login from "../Profile/Login";
-import Supplier from "../Supplier/Supplier";
 import Footer from "../Footer/Footer";
 import Checkout from "../Checkout/Checkout";
 
@@ -29,7 +28,6 @@ export default function AllRoutes() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/supplier" element={<Supplier />} />
         <Route
           path="/checkout/cart"
           element={

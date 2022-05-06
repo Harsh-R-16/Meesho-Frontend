@@ -68,7 +68,7 @@ export default function Home() {
               { img, name, soldBy, sprice, aprice, rating, reviews, _id },
               index
             ) => (
-              <Link to={`/product/${_id}`}>
+              <Link to={`/product/${_id}`} key={index + 1000}>
                 <div key={index}>
                   <img src={img} alt="" className="main-img" />
                   <p className="quantity">

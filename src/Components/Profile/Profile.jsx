@@ -1,12 +1,15 @@
 import React from "react";
 import { Section } from "./Styled-Profile";
 import { useNavigate } from "react-router-dom";
-import { FaGooglePlusG } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { addName } from "../../Redux/action.js";
 import FacebookLogin from "react-facebook-login";
+import SigninWithGoogle from "./SigninWithGoogle";
 
 export default function Profile() {
   let [inp, setInp] = React.useState("7046581170");
   let navigate = useNavigate();
+  let dispatch = useDispatch();
   const submitForm = (e) => {
     let a = Math.round(Math.random() * 1000 + 123456);
     alert("Your OTP is: " + a);
@@ -24,7 +27,8 @@ export default function Profile() {
         "\n" +
         JSON.stringify(response)
     );
-    navigate("/signup");
+    dispatch(addName(response.name));
+    navigate("/checkout/cart");
   };
 
   return (
@@ -57,11 +61,7 @@ export default function Profile() {
           </span>
         </p>
         <div id="login-options">
-          <button>
-            <FaGooglePlusG />
-            Login with Google
-          </button>
-
+          <SigninWithGoogle />
           <FacebookLogin
             appId="696422361677581"
             autoLoad={true}
