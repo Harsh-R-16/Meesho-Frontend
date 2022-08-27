@@ -8,7 +8,7 @@ Meesho is a social commerce platform that undertakes retail distribution, enabli
 
 # Deployed link of the Website
 
-> [Meesho.com](https://meesho-website-clone.netlify.app/)
+> [https://meesho-website-clone.netlify.app/](https://meesho-website-clone.netlify.app/)
 
 # Created With
 
