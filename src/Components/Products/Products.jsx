@@ -37,6 +37,7 @@ export default function Products() {
         }
         temp.sort(() => Math.random() - 0.5);
         setIsLoading(false);
+        // console.log(temp);
         setProducts(temp.slice(0, 80));
       })
       .catch((err) => {

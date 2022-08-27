@@ -233,7 +233,11 @@ export default function Navbar() {
             </p>
           </a>
           <p className="line">|</p>
-          <a href="http://localhost:3001/" target="_blank" rel="noreferrer">
+          <a
+            href="https://meesho-supplier-harsh.netlify.app"
+            target="_blank"
+            rel="noreferrer"
+          >
             <p>Become a Supplier</p>
           </a>
           <p className="line">|</p>

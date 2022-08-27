@@ -1,34 +1,16 @@
 import React from "react";
 import { Section } from "./Styled-Profile";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addName } from "../../Redux/action.js";
-import FacebookLogin from "react-facebook-login";
 import SigninWithGoogle from "./SigninWithGoogle";
 
 export default function Profile() {
   let [inp, setInp] = React.useState("7046581170");
   let navigate = useNavigate();
-  let dispatch = useDispatch();
   const submitForm = (e) => {
     let a = Math.round(Math.random() * 1000 + 123456);
     alert("Your OTP is: " + a);
     localStorage.setItem("otp", a);
     navigate("/signup");
-  };
-  const responseFacebook = (response) => {
-    console.log(response);
-    alert(
-      "Success!!!\n" +
-        "Name: " +
-        response.name +
-        "\nEmail ID: " +
-        response.email +
-        "\n" +
-        JSON.stringify(response)
-    );
-    dispatch(addName(response.name));
-    navigate("/checkout/cart");
   };
 
   return (
@@ -62,13 +44,6 @@ export default function Profile() {
         </p>
         <div id="login-options">
           <SigninWithGoogle />
-          <FacebookLogin
-            appId="696422361677581"
-            autoLoad={true}
-            fields="name,email,picture"
-            callback={responseFacebook}
-            cssClass="my-facebook-button-class"
-          />
         </div>
         <p id="privacy-policy">
           <p>By continuing, you agree to Meesho’s</p>{" "}

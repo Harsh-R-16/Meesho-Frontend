@@ -106,7 +106,7 @@ export default function Cart() {
           <label htmlFor="coupen-code">Apply Promo Code: </label>
           <select name="code" id="coupen-code">
             <option value="">Select a code</option>
-            <option value="">MASAI30</option>
+            <option value="">MEESHO30</option>
             <option value="">CASHBACK100</option>
           </select>
         </div>
@@ -134,7 +134,7 @@ export default function Cart() {
             </span>
           </p>
           <p>
-            Total Amount (MASAI30 Applied):{" "}
+            Total Amount (MEESHO30 Applied):{" "}
             <span>
               RS.{" "}
               {Math.round(
